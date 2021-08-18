@@ -32,8 +32,6 @@ protocol CDModelProtocol: DatabaseModelProtocol, Codable {}
 // Here NSManagedObject is like row of a Table(Entity)
 class CDModel: NSManagedObject, CDModelProtocol{
     
-//    let uniqueId: String = UUID().uuidString
-    
     required convenience init(from decoder: Decoder) throws {
         guard let codingUserInfoKeyManagedObjectContext = CodingUserInfoKey.managedObjectContext,
               let managedObjectContext = decoder.userInfo[codingUserInfoKeyManagedObjectContext] as? NSManagedObjectContext
@@ -56,15 +54,16 @@ class CDModel: NSManagedObject, CDModelProtocol{
 class CDManager: DatabaseManager{
     typealias T = CDModel
     
-    static var instance = CDManager()
     var context: NSManagedObjectContext!
     var persistentContainer: NSPersistentContainer!
+    var enityType: CoreDataEntity = .none
     
-    init() {
+    init(entity: CoreDataEntity) {
+        enityType = entity
         setupDatabase()
     }
     
-    fileprivate func saveContext(){
+    func saveContext(){
         do {
             try context.save()
         } catch  {
@@ -84,7 +83,7 @@ class CDManager: DatabaseManager{
     }
     
     func fetchDatabaseModels() -> [CDModel] {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataEntity.user.rawValue)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: enityType.rawValue)
         //let containsPredicate = NSPredicate(format: "email CONTAINS[c] 'test'") // [c] matches with case insensitive
         //let matchesPredicate = NSPredicate(format: "first_name =%@", "test")
         //fetchRequest.predicate = matchesPredicate
@@ -95,7 +94,7 @@ class CDManager: DatabaseManager{
     }
     
     func deleteDatabaseModel(model: CDModel) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: CoreDataEntity.user.rawValue)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: enityType.rawValue)
         let matchesPredicate = NSPredicate(format: "uniqueId =%@", "\(model.objectID)")
         fetchRequest.predicate = matchesPredicate
         if let objects = try? context.fetch(fetchRequest) as? [CDModel]{
@@ -110,7 +109,7 @@ class CDManager: DatabaseManager{
     func deleteAll() {
         // Specify a batch to delete with a fetch request
         let fetchRequest: NSFetchRequest<NSFetchRequestResult>
-        fetchRequest = NSFetchRequest(entityName: CoreDataEntity.user.rawValue)
+        fetchRequest = NSFetchRequest(entityName: enityType.rawValue)
         
         // Create a batch delete request for the
         // fetch request

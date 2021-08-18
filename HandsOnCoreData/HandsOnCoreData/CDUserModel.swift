@@ -19,7 +19,7 @@ final class CDUserModel: CDModel{
     }
     
     // MARK:- Init Entity
-    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
+    private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
 
         guard let _ = context,
               let userEntity = NSEntityDescription.entity(forEntityName: CoreDataEntity.user.rawValue,

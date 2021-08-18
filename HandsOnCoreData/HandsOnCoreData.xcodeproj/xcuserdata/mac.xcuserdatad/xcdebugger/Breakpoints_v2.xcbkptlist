@@ -14,8 +14,8 @@
             filePath = "HandsOnCoreData/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "parsableJson()"
             landmarkType = "7">
          </BreakpointContent>

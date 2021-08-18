@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H524" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Admin" representedClassName=".CDAdminModel" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="fullName" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="User" representedClassName=".CDUserModel" syncable="YES">
+        <attribute name="firstName" optional="YES" attributeType="String"/>
+        <attribute name="lastName" optional="YES" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="User" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="Admin" positionX="-54" positionY="9" width="128" height="73"/>
+    </elements>
+</model>

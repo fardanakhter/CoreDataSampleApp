@@ -94,15 +94,16 @@ class CDManager: DatabaseManager{
     }
     
     func deleteDatabaseModel(model: CDModel) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: enityType.rawValue)
-        let matchesPredicate = NSPredicate(format: "uniqueId =%@", "\(model.objectID)")
-        fetchRequest.predicate = matchesPredicate
-        if let objects = try? context.fetch(fetchRequest) as? [CDModel]{
-            
-            objects.forEach{ obj in
-                context.delete(obj)
-            }
-        }
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: enityType.rawValue)
+//        let matchesPredicate = NSPredicate(format: "objectID =%@", "\(model.objectID)")
+//        fetchRequest.predicate = matchesPredicate
+//        if let objects = try? context.fetch(fetchRequest) as? [CDModel]{
+//
+//            objects.forEach{ obj in
+//                context.delete(obj)
+//            }
+//        }
+        context.delete(model)
         saveContext()
     }
     

@@ -14,14 +14,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var lastname: UITextField!
     @IBOutlet weak var emailAddress: UITextField!
     
+    var list = [CDUserModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //parsableJson()
+        //retrieveValuesToViews()
         
-        //let entity: CoreDataEntity = .user
+        let entity: CoreDataEntity = .user
         //let modelType = (entity == .user ? CDUserModel.self : CDAdminModel.self)
-        //let manager = CDManager(entity: entity)
-        
+        let manager = CDManager(entity: entity)
+        //manager.deleteAll()
         
         //        let user = CDUserModel(context: manager.context)
         //        user.firstName = "test"
@@ -29,26 +31,32 @@ class ViewController: UIViewController {
         //        user.setValue("john", forKey: CDUserModel.CodingKeys.firstName.rawValue)
         //        user.setValue("cena", forKey: CDUserModel.CodingKeys.lastName.rawValue)
         
-        //        manager.addDatabaseModel(model: user)
+        // Save model in CoreData //
+        //manager.addDatabaseModel(model: user)
         
-        //        if let models = manager.fetchDatabaseModels() as? [CDUserModel]{
-        //            models.forEach{ item in
-        //                print("\(item.firstName ?? "") \(item.lastName ?? "" )")
-        //            }
-        //
-        //            let fetchedModel = models.first!
-        //            manager.deleteDatabaseModel(model: fetchedModel)
+        if let models = manager.fetchDatabaseModels() as? [CDUserModel]{
+            models.forEach{ item in
+                print("\(item.firstName ?? "") \(item.lastName ?? "" )")
+            }
+            
+            // Delete Fetched Model //
+            
+            //let fetchedModel = models.first!
+            //manager.deleteDatabaseModel(model: fetchedModel)
+            
+            // Update Fetched Model //
+            
+            //fetchedModel?.firstName = "johnny"
+            //manager.saveContext()
+            
+            // Print Models //
+            //models.forEach{ item in
+            //    print("\(item.firstName ?? "") \(item.lastName ?? "" )")
+            //}
+            list = models
+        }
         
-        //            fetchedModel?.firstName = "johnny"
-        //            manager.saveContext()
-        //
-        //            models.forEach{ item in
-        //                print("\(item.firstName ?? "") \(item.lastName ?? "" )")
-        //            }
-        //    }
-        //manager.deleteAll()
-        
-        retrieveValuesToViews()
+        parsableJson()
     }
     
     func retrieveValuesToViews(){
@@ -68,18 +76,106 @@ class ViewController: UIViewController {
     func parsableJson(){
         
         let jsonData = """
+    [{
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
     {
-    "firstName" : "test first",
-    "lastName" : "test last"
-    }
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },{
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },
+    {
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },{
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },{
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },{
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },{
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },{
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },{
+    "firstName" : "test-01",
+    "lastName" : "-"
+    },{
+    "firstName" : "test-01",
+    "lastName" : "-"
+    }]
     """.data(using: .utf8)!
         
-        let jsonData02 = """
-    {
-    "email" : "test@work.com",
-    "fullName" : "admin user"
-    }
-    """.data(using: .utf8)!
+//        let jsonData02 = """
+//    {
+//    "email" : "test@work.com",
+//    "fullName" : "admin user"
+//    }
+//    """.data(using: .utf8)!
         
         guard let codingUserInfoKeyManagedObjectContext = CodingUserInfoKey.managedObjectContext else {
             fatalError("Failed to retrieve context")
@@ -95,9 +191,10 @@ class ViewController: UIViewController {
         let decoder = JSONDecoder()
         decoder.userInfo[codingUserInfoKeyManagedObjectContext] = managedObjectContext
         
-        let user = try! decoder.decode(CDUserModel.self, from: jsonData)
+        let user = try! decoder.decode([CDUserModel].self, from: jsonData)
         
-        let admin = try! decoder.decode(CDAdminModel.self, from: jsonData02)
+        //let admin = try! decoder.decode(CDAdminModel.self, from: jsonData02)
+        list.append(contentsOf: user)
         
         try! managedObjectContext.save()
     }
